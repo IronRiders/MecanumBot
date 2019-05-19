@@ -3,6 +3,8 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive; 
+import frc.robot.LambdaJoystick.ThrottlePosition;
+
 
 
 public class MecanumDriveTrain {
@@ -15,6 +17,8 @@ public class MecanumDriveTrain {
     private CANSparkMax rearLeft;
     private CANSparkMax frontRight;
     private CANSparkMax rearRight;
+
+    private boolean driveInverted = false;
 
     private MecanumDrive m_robotDrive;
 
@@ -33,4 +37,18 @@ public class MecanumDriveTrain {
     }
 
     public MecanumDrive getRobotDrive() {return m_robotDrive;}
-}
+
+    public void invertDrive() {
+        driveInverted = !driveInverted;
+    }
+
+    public void updateSpeed(final ThrottlePosition throttlePos) {
+        //double ySpeed, double xSpeed, double zRotation, double gyroAngle
+        if (driveInverted) {
+            m_robotDrive.driveCartesian(-throttlePos.y, throttlePos.x, throttlePos.z, 0); //gyro angle where 0 is
+        } else {
+            m_robotDrive.driveCartesian(throttlePos.y, throttlePos.x, throttlePos.z, 0); //gyro angle where 0 is
+        }
+        
+    } //probably not needed
+} 

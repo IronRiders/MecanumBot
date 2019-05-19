@@ -8,11 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * This is a demo program showing how to use Mecanum control with the RobotDrive
@@ -22,20 +19,22 @@ public class Robot extends TimedRobot {
   private static final int kJoystickChannel = 0;
 
   private MecanumDrive m_robotDrive;
-  private Joystick m_stick;
+ // private Joystick joystick1;
+  private LambdaJoystick joystickL;
 
   @Override
   public void robotInit() {
     MecanumDriveTrain mecanum = new MecanumDriveTrain();
-
     m_robotDrive = mecanum.getRobotDrive();
-    m_stick = new Joystick(kJoystickChannel);
+    
+    joystickL = new LambdaJoystick(0, mecanum::updateSpeed);    
   }
 
   @Override
   public void teleopPeriodic() {
     // Use the joystick X axis for lateral movement, Y axis for forward
     // movement, and Z axis for rotation.
-    m_robotDrive.driveCartesian(m_stick.getX(), m_stick.getY(), m_stick.getZ(), 0.0);
+   // m_robotDrive.driveCartesian(joystick1.getX(), joystick1.getY(), joystick1.getZ(), 0.0);
+  
   }
 }
