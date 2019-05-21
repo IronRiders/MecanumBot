@@ -18,23 +18,34 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 public class Robot extends TimedRobot {
   private static final int kJoystickChannel = 0;
 
-  private MecanumDrive m_robotDrive;
- // private Joystick joystick1;
-  private LambdaJoystick joystickL;
+  private final MecanumDriveTrain mecanum = new MecanumDriveTrain();
+  private final MecanumDrive m_robotDrive = mecanum.getRobotDrive();
+  private final LambdaJoystick joystick1 = new LambdaJoystick(0, mecanum::updateSpeed);
+  private final LambdaJoystick joystick2 = new LambdaJoystick(1, mecanum::updateSpeed);   //TODO filler
 
   @Override
   public void robotInit() {
-    MecanumDriveTrain mecanum = new MecanumDriveTrain();
-    m_robotDrive = mecanum.getRobotDrive();
+     joystick1.addButton(10, mecanum::invertDrive);
+  }
+
+  @Override
+  public void teleopInit() {
     
-    joystickL = new LambdaJoystick(0, mecanum::updateSpeed);    
   }
 
   @Override
   public void teleopPeriodic() {
-    // Use the joystick X axis for lateral movement, Y axis for forward
-    // movement, and Z axis for rotation.
-   // m_robotDrive.driveCartesian(joystick1.getX(), joystick1.getY(), joystick1.getZ(), 0.0);
-  
+    joystick1.listen();
+    joystick2.listen();
+  }
+
+  @Override
+  public void autonomousInit() {
+
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+
   }
 }

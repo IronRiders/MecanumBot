@@ -5,8 +5,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive; 
 import frc.robot.LambdaJoystick.ThrottlePosition;
 
-
-
 public class MecanumDriveTrain {
     private static final int kFrontLeftChannel = 2;
     private static final int kRearLeftChannel = 3;
@@ -28,8 +26,7 @@ public class MecanumDriveTrain {
         frontRight = new CANSparkMax(kFrontRightChannel, MotorType.kBrushless); 
         rearRight = new CANSparkMax(kRearRightChannel, MotorType.kBrushless); 
 
-        // Invert the left side motors.
-        // You may need to change or remove this to match your robot.
+        // Invert the left side motors
         frontLeft.setInverted(true);
         rearLeft.setInverted(true);
 
@@ -44,11 +41,12 @@ public class MecanumDriveTrain {
 
     public void updateSpeed(final ThrottlePosition throttlePos) {
         //double ySpeed, double xSpeed, double zRotation, double gyroAngle
+        //z should make it turn, rest should 
         if (driveInverted) {
-            m_robotDrive.driveCartesian(-throttlePos.y, throttlePos.x, throttlePos.z, 0); //gyro angle where 0 is
+            m_robotDrive.driveCartesian(-throttlePos.y, -throttlePos.x, -throttlePos.z, 0); //gyro angle where 0 is
         } else {
             m_robotDrive.driveCartesian(throttlePos.y, throttlePos.x, throttlePos.z, 0); //gyro angle where 0 is
         }
         
-    } //probably not needed
+    } //Might not be needed, just depends on if we want to use Lambda joystick
 } 

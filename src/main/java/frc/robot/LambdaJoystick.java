@@ -2,7 +2,7 @@ package frc.robot;
 
 import java.util.function.Consumer;
 import edu.wpi.first.wpilibj.Joystick;
-//TODO: Probably del this file/wont use?
+//TODO: Decide if its worth using this file
 
 public class LambdaJoystick extends Joystick {
     private Button[] buttons = new Button[11];
