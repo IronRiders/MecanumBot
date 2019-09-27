@@ -9,7 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import frc.robot.MecanumDriveCustom;
+//import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 /**
  * This is a demo program showing how to use Mecanum control with the RobotDrive
@@ -19,7 +20,7 @@ public class Robot extends TimedRobot {
   private static final int kJoystickChannel = 0;
 
   private final MecanumDriveTrain mecanum = new MecanumDriveTrain();
-  private final MecanumDrive m_robotDrive = mecanum.getRobotDrive();
+  private final MecanumDriveCustom m_robotDrive = mecanum.getRobotDrive();
   private final LambdaJoystick joystick1 = new LambdaJoystick(0, mecanum::updateSpeed);
   private final LambdaJoystick joystick2 = new LambdaJoystick(1, mecanum::updateSpeed);   //TODO filler
 
