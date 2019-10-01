@@ -11,19 +11,16 @@ public class MecanumDrive {
     private static final int kFrontRightChannel = 3;
     private static final int kRearRightChannel = 2;
 
-    private CANSparkMax frontLeft;
-    private CANSparkMax rearLeft;
-    private CANSparkMax frontRight;
-    private CANSparkMax rearRight;
+    private CANSparkMax[] motors;
 
     public MecanumDrive() {
-        this.frontLeft = new CANSparkMax(kFrontLeftChannel, MotorType.kBrushless);
-        this.frontRight = new CANSparkMax(kFrontRightChannel, MotorType.kBrushless);
-        this.rearLeft = new CANSparkMax(kRearLeftChannel, MotorType.kBrushless);
-        this.rearRight = new CANSparkMax(kRearRightChannel, MotorType.kBrushless);
+        motors[0] = new CANSparkMax(kFrontLeftChannel, MotorType.kBrushless);
+        motors[1] = new CANSparkMax(kFrontRightChannel, MotorType.kBrushless);
+        motors[2] = new CANSparkMax(kRearLeftChannel, MotorType.kBrushless);
+        motors[3] = new CANSparkMax(kRearRightChannel, MotorType.kBrushless);
 
-        this.frontLeft.setInverted(true);
-        this.rearLeft.setInverted(true);
+        motors[0].setInverted(true);
+        motors[2].setInverted(true);
     }
 
     public void updateSpeed(double strafe, double drive, double turn) {
@@ -36,20 +33,10 @@ public class MecanumDrive {
         if (magnitude(speeds) > 1) {
             speeds = normalize(speeds);
         }
-        speeds = scale(speeds, kSpeedMultiplier);
 
-        this.frontLeft.set(speeds[0]);
-        this.frontRight.set(speeds[1]);
-        this.rearLeft.set(speeds[2]);
-        this.rearRight.set(speeds[3]);
-    }
-
-    private double[] scale(final double[] vector, final double scalar) {
-        double[] out = new double[vector.length];
-        for (int i = 0; i < vector.length; ++i) {
-            out[i] = vector[i] * scalar;
+        for (int i = 0; i < 4; ++i) {
+            motors[i].set(speeds[i] * kSpeedMultiplier);
         }
-        return out;
     }
 
     private double magnitude(final double[] vector) {
@@ -65,6 +52,10 @@ public class MecanumDrive {
     }
 
     private double[] normalize(final double[] vector) {
-        return scale(vector, 1 / magnitude(vector));
+        double[] normalized = new double[vector.length];
+        for (int i = 0; i < vector.length; ++i) {
+            normalized[i] = vector[i] / magnitude(vector);
+        }
+        return normalized;
     }
 }
