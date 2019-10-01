@@ -28,10 +28,10 @@ public class MecanumDrive {
 
     public void updateSpeed(double strafe, double drive, double turn) {
         double[] speeds = new double[4];
-        speeds[kFrontLeftChannel]  = strafe + drive + turn;
-        speeds[kFrontRightChannel] = strafe + drive - turn;
-        speeds[kRearLeftChannel]   = -strafe + drive + turn;
-        speeds[kRearRightChannel]  = -strafe + drive - turn;
+        speeds[0] = strafe + drive + turn;
+        speeds[1] = strafe + drive - turn;
+        speeds[2] = -strafe + drive + turn;
+        speeds[3] = -strafe + drive - turn;
 
         if (magnitude(speeds) > 1) {
             speeds = normalize(speeds);
@@ -41,10 +41,10 @@ public class MecanumDrive {
             speeds[i] *= kSpeedMultiplier;
         }
 
-        this.frontLeft.set(speeds[kFrontLeftChannel]);
-        this.frontRight.set(speeds[kFrontRightChannel]);
-        this.rearLeft.set(speeds[kRearLeftChannel]);
-        this.rearRight.set(speeds[kRearRightChannel]);
+        this.frontLeft.set(speeds[0]);
+        this.frontRight.set(speeds[1]);
+        this.rearLeft.set(speeds[2]);
+        this.rearRight.set(speeds[3]);
     }
 
     private double magnitude(final double[] vector) {
