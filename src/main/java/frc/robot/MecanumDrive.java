@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import frc.robot.Controller;
 
 public class MecanumDrive {
     private static final double kMaxOutput = 0.5;
@@ -27,12 +26,12 @@ public class MecanumDrive {
         this.rearLeft.setInverted(true);
     }
 
-    public void updateSpeed(final Controller controller) {
+    public void updateSpeed(double strafe, double drive, double turn) {
         double[] speeds = new double[4];
-        speeds[kFrontLeftChannel] = controller.axes[0] + controller.axes[1] + controller.axes[3];
-        speeds[kFrontRightChannel] = controller.axes[0] + controller.axes[1] - controller.axes[3];
-        speeds[kRearLeftChannel] = -controller.axes[0] + controller.axes[1] + controller.axes[3];
-        speeds[kRearRightChannel] = -controller.axes[0] + controller.axes[1] - controller.axes[3];
+        speeds[kFrontLeftChannel] = strafe + drive + turn;
+        speeds[kFrontRightChannel] = strafe + drive - turn;
+        speeds[kRearLeftChannel] = -strafe + drive + turn;
+        speeds[kRearRightChannel] = -strafe + drive - turn;
 
         speeds = magnitude(speeds) > 1 ? normalize(speeds) : speeds;
 
@@ -60,8 +59,9 @@ public class MecanumDrive {
 
     private double[] normalize(double[] vector) {
         double[] normalized = new double[vector.length];
+        final double mag = magnitude(vector);
         for (int i = 0; i < vector.length; ++i) {
-            normalized[i] = vector[i] / magnitude(vector);
+            normalized[i] = vector[i] / mag;
         }
         return normalized;
     }
