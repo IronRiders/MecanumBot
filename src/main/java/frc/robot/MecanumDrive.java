@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class MecanumDrive {
-    private static final double kMaxOutput = 0.5;
+    private static final double kSpeedMultiplier = 0.5;
 
     private static final int kFrontLeftChannel = 1;
     private static final int kRearLeftChannel = 4;
@@ -28,15 +28,17 @@ public class MecanumDrive {
 
     public void updateSpeed(double strafe, double drive, double turn) {
         double[] speeds = new double[4];
-        speeds[kFrontLeftChannel] = strafe + drive + turn;
+        speeds[kFrontLeftChannel]  = strafe + drive + turn;
         speeds[kFrontRightChannel] = strafe + drive - turn;
-        speeds[kRearLeftChannel] = -strafe + drive + turn;
-        speeds[kRearRightChannel] = -strafe + drive - turn;
+        speeds[kRearLeftChannel]   = -strafe + drive + turn;
+        speeds[kRearRightChannel]  = -strafe + drive - turn;
 
-        speeds = magnitude(speeds) > 1 ? normalize(speeds) : speeds;
+        if (magnitude(speeds) > 1) {
+            speeds = normalize(speeds);
+        }
 
         for (int i = 0; i < speeds.length; ++i) {
-            speeds[i] *= kMaxOutput;
+            speeds[i] *= kSpeedMultiplier;
         }
 
         this.frontLeft.set(speeds[kFrontLeftChannel]);
