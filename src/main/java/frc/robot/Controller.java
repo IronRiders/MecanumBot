@@ -21,9 +21,15 @@ public class Controller extends GenericHID {
         for (int i = 0; i < this.axes.length; ++i) {
             double raw = this.getRawAxis(i);
             double clamped = raw < -1 ? -1 : raw > 1 ? 1 : raw;
-            double deadzone = clamped > kDeadzone ? (clamped - kDeadzone) / (1 - kDeadzone)
-                    : clamped < -kDeadzone ? (clamped + kDeadzone) / (1 - kDeadzone) : 0;
-            this.axes[i] = deadzone;
+            if (clamped > kDeadzone) {
+                this.axes[i] = (clamped - kDeadzone) / (1 - kDeadzone);
+            }
+            else if (clamped < -kDeadzone) {
+                this.axes[i] = (clamped + kDeadzone) / (1 - kDeadzone);
+            }
+            else {
+                this.axes[i] = 0;
+            }
         }
 
         for (int i = 0; i < this.buttons.length; ++i) {
