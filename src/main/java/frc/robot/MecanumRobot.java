@@ -12,9 +12,9 @@ public class MecanumRobot extends TimedRobot {
     public void teleopPeriodic() {
         this.controller.update();
         
-        final double x = this.controller.axes[0];
-        final double y = this.controller.axes[1];
-        final double w = this.controller.axes[3];
+        final double x = this.controller.getAxes()[0];
+        final double y = this.controller.getAxes()[1];
+        final double w = this.controller.getAxes()[3];
         
         this.mecanumDrive.updateSpeed(x, y, w);
     }
