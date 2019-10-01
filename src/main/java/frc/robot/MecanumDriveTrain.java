@@ -2,14 +2,17 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.drive.MecanumDrive; 
+import frc.robot.MecanumDriveCustom;
+//import edu.wpi.first.wpilibj.drive.MecanumDrive; 
 import frc.robot.LambdaJoystick.ThrottlePosition;
 
 public class MecanumDriveTrain {
-    private static final int kFrontLeftChannel = 2;
-    private static final int kRearLeftChannel = 3;
-    private static final int kFrontRightChannel = 1;
-    private static final int kRearRightChannel = 0;
+    private static final int kFrontLeftChannel = 1;
+    
+    //JAG - chnaged mmotor 0 to motor 4
+    private static final int kRearLeftChannel = 4;
+    private static final int kFrontRightChannel = 3;
+    private static final int kRearRightChannel = 2;
 
     private CANSparkMax frontLeft;
     private CANSparkMax rearLeft;
@@ -18,7 +21,7 @@ public class MecanumDriveTrain {
 
     private boolean driveInverted = false;
 
-    private MecanumDrive m_robotDrive;
+    private MecanumDriveCustom m_robotDrive;
 
     public MecanumDriveTrain() {
         frontLeft = new CANSparkMax(kFrontLeftChannel, MotorType.kBrushless); 
@@ -30,10 +33,10 @@ public class MecanumDriveTrain {
         frontLeft.setInverted(true);
         rearLeft.setInverted(true);
 
-        m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
+        m_robotDrive = new MecanumDriveCustom(frontLeft, rearLeft, frontRight, rearRight);
     }
 
-    public MecanumDrive getRobotDrive() {return m_robotDrive;}
+    public MecanumDriveCustom getRobotDrive() {return m_robotDrive;}
 
     public void invertDrive() {
         driveInverted = !driveInverted;
@@ -41,12 +44,14 @@ public class MecanumDriveTrain {
 
     public void updateSpeed(final ThrottlePosition throttlePos) {
         //double ySpeed, double xSpeed, double zRotation, double gyroAngle
-        //z should make it turn, rest should 
-        if (driveInverted) {
-            m_robotDrive.driveCartesian(-throttlePos.y, -throttlePos.x, -throttlePos.z, 0); //gyro angle where 0 is
+        //z sho+ uld make it turn, rest should 
+       
+       
+       if (driveInverted) {
+            m_robotDrive.driveCartesian(-throttlePos.y, -throttlePos.x, -throttlePos.z, -throttlePos.w, 0); //gyro angle where 0 is
         } else {
-            m_robotDrive.driveCartesian(throttlePos.y, throttlePos.x, throttlePos.z, 0); //gyro angle where 0 is
+            m_robotDrive.driveCartesian(throttlePos.y, throttlePos.x, throttlePos.z, throttlePos.w, 0); //gyro angle where 0 is
         }
         
     } //Might not be needed, just depends on if we want to use Lambda joystick
-} 
+}   
