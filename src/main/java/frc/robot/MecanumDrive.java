@@ -36,15 +36,20 @@ public class MecanumDrive {
         if (magnitude(speeds) > 1) {
             speeds = normalize(speeds);
         }
-
-        for (int i = 0; i < speeds.length; ++i) {
-            speeds[i] *= kSpeedMultiplier;
-        }
+        speeds = scale(speeds, kSpeedMultiplier);
 
         this.frontLeft.set(speeds[0]);
         this.frontRight.set(speeds[1]);
         this.rearLeft.set(speeds[2]);
         this.rearRight.set(speeds[3]);
+    }
+
+    private double[] scale(final double[] vector, final double scalar) {
+        double[] out = new double[vector.length];
+        for (int i = 0; i < vector.length; ++i) {
+            out[i] = vector[i] * scalar;
+        }
+        return out;
     }
 
     private double magnitude(final double[] vector) {
@@ -56,15 +61,10 @@ public class MecanumDrive {
         for (double square : squares) {
             sum += square;
         }
-        return Math.sqrt(sum);
+        return Math.pow(sum, 1 / vector.length);
     }
 
-    private double[] normalize(double[] vector) {
-        double[] normalized = new double[vector.length];
-        final double mag = magnitude(vector);
-        for (int i = 0; i < vector.length; ++i) {
-            normalized[i] = vector[i] / mag;
-        }
-        return normalized;
+    private double[] normalize(final double[] vector) {
+        return scale(vector, 1 / magnitude(vector));
     }
 }
