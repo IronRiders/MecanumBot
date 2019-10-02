@@ -14,6 +14,7 @@ public class MecanumDrive {
     private CANSparkMax[] motors;
 
     public MecanumDrive() {
+        motors = new CANSparkMax[4];
         motors[0] = new CANSparkMax(kFrontLeftChannel, MotorType.kBrushless);
         motors[1] = new CANSparkMax(kFrontRightChannel, MotorType.kBrushless);
         motors[2] = new CANSparkMax(kRearLeftChannel, MotorType.kBrushless);
