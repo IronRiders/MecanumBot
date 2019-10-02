@@ -7,7 +7,6 @@ public class Main {
         Controller controller;
         for (int i = 0; i < 5; ++i) {
             controller = new Controller(i);
-            controller.update();
             System.out.println(controller.getAxes().length);
             System.out.println(controller.getButtons().length);
         }
