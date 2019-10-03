@@ -2,30 +2,22 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.Controller;
+import frc.robot.MecanumDrive;
 
 public class Robot extends TimedRobot {
     private Controller controller;
+    private MecanumDrive mecanumDrive;
 
     @Override
     public void robotInit() {
         controller = new Controller(0);
+        mecanumDrive = new MecanumDrive();
     }
 
     @Override
     public void teleopPeriodic() {
         controller.update();
-        System.out.println();
-        System.out.println(controller.getName());
-        final double[] axes = controller.getAxes();
-        System.out.println("axes.length: " + axes.length);
-        for (int i = 0; i < axes.length; ++i) {
-            System.out.println("axes[" + i + "]: " + axes[i]);
-        }
-        final boolean[] buttons = controller.getButtons();
-        System.out.println("buttons.length: " + buttons.length);
-        for (int i = 0; i < buttons.length; ++i) {
-            System.out.println("buttons[" + i + "]: " + buttons[i]);
-        }
-        System.out.println();
+        double[] axes = controller.getAxes();
+        mecanumDrive.updateSpeed(axes[0], axes[1], axes[2]);
     }
 }
