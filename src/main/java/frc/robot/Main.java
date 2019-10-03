@@ -1,14 +1,10 @@
 package frc.robot;
 
-import frc.robot.Controller;
+import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.Robot;
 
 public class Main {
     public static final void main(String[] args) {
-        Controller controller;
-        for (int i = 0; i < 5; ++i) {
-            controller = new Controller(i);
-            System.out.println(controller.getAxes().length);
-            System.out.println(controller.getButtons().length);
-        }
+        RobotBase.startRobot(Robot::new);
     }
 }

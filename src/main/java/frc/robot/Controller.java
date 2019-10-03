@@ -10,14 +10,11 @@ public class Controller extends GenericHID {
 
     public Controller(final int port) {
         super(port);
-
-        this.axes = new double[this.getAxisCount()];
-        this.buttons = new boolean[this.getButtonCount()];
-
         this.update();
     }
 
     public final void update() {
+        this.axes = new double[this.getAxisCount()];
         for (int i = 0; i < this.axes.length; ++i) {
             double raw = this.getRawAxis(i);
             double clamped = raw < -1 ? -1 : raw > 1 ? 1 : raw;
@@ -32,6 +29,7 @@ public class Controller extends GenericHID {
             }
         }
 
+        this.buttons = new boolean[this.getButtonCount()];
         for (int i = 0; i < this.buttons.length; ++i) {
             this.buttons[i] = this.getRawButton(i + 1);
         }
@@ -47,11 +45,11 @@ public class Controller extends GenericHID {
 
     @Override
     public double getX(Hand hand) {
-        return this.axes[0];
+        return 0;
     }
 
     @Override
     public double getY(Hand hand) {
-        return this.axes[1];
+        return 0;
     }
 }
