@@ -28,9 +28,9 @@ public class MecanumDrive {
 
     public void updateSpeed(double strafe, double drive, double turn) {
         double[] speeds = new double[4];
-        speeds[0] = 0 + strafe + drive + turn;
+        speeds[0] = 0 - strafe + drive + turn;
         speeds[1] = 0 + strafe + drive - turn;
-        speeds[2] = 0 - strafe + drive + turn;
+        speeds[2] = 0 + strafe + drive + turn;
         speeds[3] = 0 - strafe + drive - turn;
 
         if (magnitude(speeds) > 1) {
