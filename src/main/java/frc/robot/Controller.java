@@ -54,11 +54,13 @@ public class Controller extends GenericHID {
     }
 
     @Override
+    @Deprecated
     public double getX(Hand hand) {
         return 0;
     }
 
     @Override
+    @Deprecated
     public double getY(Hand hand) {
         return 0;
     }
