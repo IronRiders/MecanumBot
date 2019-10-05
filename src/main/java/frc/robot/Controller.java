@@ -10,19 +10,19 @@ public class Controller extends GenericHID {
     }
 
     public final double getAxis(final int i) {
-        double raw = this.getRawAxis(i);
+        double raw = super.getRawAxis(i);
         double clamped = raw < -1 ? -1 : raw > 1 ? 1 : raw;
-        if (clamped > kDeadzone) {
-            return (clamped - kDeadzone) / (1 - kDeadzone);
-        } else if (clamped < -kDeadzone) {
-            return (clamped + kDeadzone) / (1 - kDeadzone);
+        if (clamped > Controller.kDeadzone) {
+            return (clamped - Controller.kDeadzone) / (1 - Controller.kDeadzone);
+        } else if (clamped < -Controller.kDeadzone) {
+            return (clamped + Controller.kDeadzone) / (1 - Controller.kDeadzone);
         } else {
             return 0;
         }
     }
 
     public final boolean getButton(final int i) {
-        return this.getRawButton(i + 1);
+        return super.getRawButton(i + 1);
     }
 
     @Override

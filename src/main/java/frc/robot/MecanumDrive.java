@@ -14,16 +14,16 @@ public class MecanumDrive {
     private CANSparkMax[] motors;
 
     public MecanumDrive() {
-        motors = new CANSparkMax[4];
-        motors[0] = new CANSparkMax(kFrontLeftChannel, MotorType.kBrushless);
-        motors[1] = new CANSparkMax(kFrontRightChannel, MotorType.kBrushless);
-        motors[2] = new CANSparkMax(kRearLeftChannel, MotorType.kBrushless);
-        motors[3] = new CANSparkMax(kRearRightChannel, MotorType.kBrushless);
+        this.motors = new CANSparkMax[4];
+        this.motors[0] = new CANSparkMax(MecanumDrive.kFrontLeftChannel, MotorType.kBrushless);
+        this.motors[1] = new CANSparkMax(MecanumDrive.kFrontRightChannel, MotorType.kBrushless);
+        this.motors[2] = new CANSparkMax(MecanumDrive.kRearLeftChannel, MotorType.kBrushless);
+        this.motors[3] = new CANSparkMax(MecanumDrive.kRearRightChannel, MotorType.kBrushless);
 
-        motors[0].setInverted(true);
-        motors[1].setInverted(false);
-        motors[2].setInverted(true);
-        motors[3].setInverted(false);
+        this.motors[0].setInverted(true);
+        this.motors[1].setInverted(false);
+        this.motors[2].setInverted(true);
+        this.motors[3].setInverted(false);
     }
 
     public void updateSpeed(double strafe, double drive, double turn) {
@@ -38,7 +38,7 @@ public class MecanumDrive {
         }
 
         for (int i = 0; i < 4; ++i) {
-            motors[i].set(speeds[i] * kSpeedMultiplier);
+            this.motors[i].set(speeds[i] * MecanumDrive.kSpeedMultiplier);
         }
     }
 
