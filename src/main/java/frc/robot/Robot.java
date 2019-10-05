@@ -16,8 +16,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        controller.update();
-        double[] axes = controller.getAxes();
-        mecanumDrive.updateSpeed(axes[0], axes[1], axes[2]);
+        mecanumDrive.updateSpeed(controller.getAxis(0), controller.getAxis(1), controller.getAxis(2));
     }
 }
