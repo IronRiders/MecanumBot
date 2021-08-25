@@ -9,6 +9,10 @@ public class Controller extends GenericHID {
         super(port);
     }
 
+    public boolean getButtonPressed(final int i) {
+        return super.getRawButtonPressed(i);
+    }
+
     public final double getAxis(final int i) {
         double raw = super.getRawAxis(i);
         double clamped = raw < -1 ? -1 : raw > 1 ? 1 : raw;

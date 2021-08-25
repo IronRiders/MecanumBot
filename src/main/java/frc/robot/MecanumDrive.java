@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class MecanumDrive {
-    private static final double kSpeedMultiplier = 0.5;
+    private static final double kSpeedMultiplier = 0.125;
 
     private static final int kFrontLeftChannel = 1;
     private static final int kRearLeftChannel = 4;
@@ -55,9 +55,18 @@ public class MecanumDrive {
     }
 
     private double[] normalize(final double[] vector) {
+        double max = 1.0;
+        for (int i = 0; i < vector.length; ++i) {
+            if (vector[i] > max) {
+                max = vector[i];
+            }
+        }
+        if (max <= 1) {
+            return vector;
+        }
         double[] normalized = new double[vector.length];
         for (int i = 0; i < vector.length; ++i) {
-            normalized[i] = vector[i] / magnitude(vector);
+            normalized[i] = vector[i] / /*magnitude(vector)*/ max;
         }
         return normalized;
     }
