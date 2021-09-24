@@ -1,51 +1,25 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import frc.robot.Controller;
+import frc.robot.MecanumDrive;
 
-/**
- * This is a demo program showing how to use Mecanum control with the RobotDrive
- * class.
- */
 public class Robot extends TimedRobot {
-  private static final int kJoystickChannel = 0;
+    private Controller controller;
+    private MecanumDrive mecanumDrive;
 
-  private final MecanumDriveTrain mecanum = new MecanumDriveTrain();
-  private final MecanumDrive m_robotDrive = mecanum.getRobotDrive();
-  private final LambdaJoystick joystick1 = new LambdaJoystick(0, mecanum::updateSpeed);
-  private final LambdaJoystick joystick2 = new LambdaJoystick(1, mecanum::updateSpeed);   //TODO filler
+    @Override
+    public void robotInit() {
+        controller = new Controller(0);
+        mecanumDrive = new MecanumDrive();
+    }
 
-  @Override
-  public void robotInit() {
-     joystick1.addButton(10, mecanum::invertDrive);
-  }
-
-  @Override
-  public void teleopInit() {
-    
-  }
-
-  @Override
-  public void teleopPeriodic() {
-    joystick1.listen();
-    joystick2.listen();
-  }
-
-  @Override
-  public void autonomousInit() {
-
-  }
-
-  @Override
-  public void autonomousPeriodic() {
-
-  }
+    @Override
+    public void teleopPeriodic() {
+        if(controller.getButtonPressed(1)){
+            mecanumDrive.invertDrive();
+        }
+        mecanumDrive.updateSpeed(controller.getAxis(0), controller.getAxis(1), controller.getAxis(2));
+        
+    }
 }
