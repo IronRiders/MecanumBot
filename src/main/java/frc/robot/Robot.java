@@ -16,7 +16,7 @@ public class Robot extends TimedRobot {
         controller = new Controller(0);
         mecanumDrive = new MecanumDrive();
         vision = new Vision();
-        tradjCreated = false;
+        // tradjCreated = false;
     }
 
     @Override
@@ -25,17 +25,19 @@ public class Robot extends TimedRobot {
             mecanumDrive.invertDrive();
         }
         if (controller.getButton(2)) {
-            if(!tradjCreated){
-                vision.updateData();
-                tradj = new VisionTrajectory(vision);
-                tradjCreated = true;
-            }
-            double speeds[] = vision.turnToTarget(tradj);
+            // if(!tradjCreated){
+            //     vision.updateData();
+            //     tradj = new VisionTrajectory(vision);
+            //     tradjCreated = true;
+            // }
+            double speeds[] = vision.driveToTarget();
+            //
             mecanumDrive.updateSpeed(speeds[0], speeds[1], speeds[2]);
         } else{
-            tradjCreated = false;
-            mecanumDrive.updateSpeed(controller.getAxis(0), controller.getAxis(1), controller.getAxis(2));
+            mecanumDrive.updateSpeed(0, 0, 0);
+            //tradjCreated = false;
+            //mecanumDrive.updateSpeed(controller.getAxis(0), controller.getAxis(1), controller.getAxis(2));
         }
-
+        vision.printCoords();
     }
 }

@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class MecanumDrive {
-    private static final double kSpeedMultiplier = 0.1;
+    private static final double kSpeedMultiplier = 0.3;
 
     private static final int kFrontLeftChannel = 1;
     private static final int kRearLeftChannel = 4;

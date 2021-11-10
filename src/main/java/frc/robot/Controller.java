@@ -26,7 +26,7 @@ public class Controller extends GenericHID {
     }
 
     public final boolean getButton(final int i) {
-        return super.getRawButton(i + 1);
+        return super.getRawButton(i);
     }
 
     @Override
