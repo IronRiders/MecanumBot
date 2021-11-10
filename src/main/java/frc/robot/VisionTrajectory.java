@@ -28,15 +28,15 @@ public class VisionTrajectory {
     private double f(double x) {
         return -(4 / Math.pow(totalAngleDistance, 2)) * Math.pow((x - (totalAngleDistance / 2)), 2) + 1;
     }
-    
-    private double integrate(double a, double b, int N) {
-    double h = (b - a) / N; // step size
-    double sum = 0.5 * (f(a) + f(b)); // area
-    for (int i = 1; i < N; i++) {
-    double x = a + h * i;
-    sum = sum + f(x);
-    }
 
-    return sum * h;
+    private double integrate(double a, double b, int N) {
+        double h = (b - a) / N; // step size
+        double sum = 0.5 * (f(a) + f(b)); // area
+        for (int i = 1; i < N; i++) {
+            double x = a + h * i;
+            sum = sum + f(x);
+        }
+
+        return sum * h;
     }
 }

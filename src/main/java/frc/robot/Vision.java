@@ -11,10 +11,14 @@ public class Vision {
     private NetworkTableEntry tx;
     private NetworkTableEntry ty;
     private NetworkTableEntry ta;
-    private final double TURN_SPEED = .03;
+    private final double TURN_SPEED = .1;
     private final double FORWARD_SPEED = .2;
+    private final double MAX_SPEED = .2;
+    private final double MIN_SPEED = .05;
     private final double TARGET_HIGHT = .447;
+    //private final double WANTED_AREA = 1;
     private final double CAMERA_HIGHT = .1;
+    private final double CAMERA_ANGLE = 0;
 
     public Vision() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -24,39 +28,33 @@ public class Vision {
         ta = table.getEntry("ta"); // Target Area or % of the image
     }
 
-    public void printCoords(){
+    public void printCoords() {
         System.out.println("tx: " + getTx() + "\tty: " + getTy() + "\tDistance " + distanceToTarget());
     }
-    public double[] turnToTarget(VisionTrajectory tradj) {
-        double driveInstructions[] = { 0, 0, 0 };
-        if (!getHasTarget()) {
-            return driveInstructions;
+
+    public double[] driveToTarget() {
+        double driveInstructions[] = { 0.0, 0.0, 0.0 };
+        if (getHasTarget()) {
+            driveInstructions[1] = distanceToTarget() * FORWARD_SPEED;
+            driveInstructions[2] = getTx() * TURN_SPEED;
+            for (int i = 0; i < driveInstructions.length; i++) {
+                if (Math.abs(driveInstructions[i]) < MIN_SPEED) {
+                    driveInstructions[i] = 0;
+                } else if (Math.abs(driveInstructions[i]) > MAX_SPEED) {
+                    driveInstructions[i] = MAX_SPEED * isNegative(driveInstructions[i]);
+                }
+            }
         }
-        double turnSpeed = tradj.turnSpeed(getTx());
-        if (getTx() < 0) {
-            turnSpeed = -turnSpeed;
-        }
+
         return driveInstructions;
 
-    }
-
-    public double[] driveToTarget(){
-        double driveInstructions[] = { 0.0, 0.0, 0.0};
-        if(getHasTarget() && distanceToTarget() > 1.2){
-            driveInstructions[1] = .1;
-        }
-        return driveInstructions;
-        
     }
 
     public double distanceToTarget() {
-        double distance = 0;
-        distance = (TARGET_HIGHT - CAMERA_HIGHT) / (Math.tan(toRadians(getTy())));
-
-        return distance;
+        return (TARGET_HIGHT - CAMERA_HIGHT) / (Math.tan(toRadians(getTy() + CAMERA_ANGLE)));
     }
 
-    public double toRadians(double x){
+    public double toRadians(double x) {
         return Math.PI * x / 180.0;
     }
 
@@ -74,6 +72,14 @@ public class Vision {
 
     public boolean getHasTarget() {
         return hasTarget.getDouble(0) == 1;
+    }
+
+    private double isNegative(double num){
+        if(num < 0){
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
 }

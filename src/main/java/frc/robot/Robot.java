@@ -25,13 +25,7 @@ public class Robot extends TimedRobot {
             mecanumDrive.invertDrive();
         }
         if (controller.getButton(2)) {
-            // if(!tradjCreated){
-            //     vision.updateData();
-            //     tradj = new VisionTrajectory(vision);
-            //     tradjCreated = true;
-            // }
             double speeds[] = vision.driveToTarget();
-            //
             mecanumDrive.updateSpeed(speeds[0], speeds[1], speeds[2]);
         } else{
             mecanumDrive.updateSpeed(0, 0, 0);
