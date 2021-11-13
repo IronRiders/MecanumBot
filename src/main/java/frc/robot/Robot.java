@@ -8,8 +8,8 @@ public class Robot extends TimedRobot {
     private Controller controller;
     private MecanumDrive mecanumDrive;
     private Vision vision;
-    private VisionTrajectory tradj;
-    private boolean tradjCreated;
+    //private VisionTrajectory tradj;
+    //private boolean tradjCreated;
 
     @Override
     public void robotInit() {
@@ -24,14 +24,13 @@ public class Robot extends TimedRobot {
         if (controller.getButtonPressed(1)){
             mecanumDrive.invertDrive();
         }
-        if (controller.getButton(2)) {
-            double speeds[] = vision.driveToTarget();
-            mecanumDrive.updateSpeed(speeds[0], speeds[1], speeds[2]);
-        } else{
-            mecanumDrive.updateSpeed(0, 0, 0);
-            //tradjCreated = false;
-            //mecanumDrive.updateSpeed(controller.getAxis(0), controller.getAxis(1), controller.getAxis(2));
-        }
-        vision.printCoords();
+        // if (controller.getButton(2)) {
+        //     double speeds[] = vision.driveToTarget();
+        //     mecanumDrive.updateSpeed(speeds[0], speeds[1], speeds[2]);
+        // } else{
+             //mecanumDrive.updateSpeed(controller.getAxis(0), controller.getAxis(1), controller.getAxis(2));
+        // }
+        // vision.printCoords();
+        mecanumDrive.updateSpeed(controller.getAxis(0), controller.getAxis(1), controller.getAxis(2));
     }
 }
