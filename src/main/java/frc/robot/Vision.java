@@ -68,54 +68,60 @@ public class Vision {
         }
     }
 
- // Returns the reduced row-echelon form of a matrix.
-private double[][] Gaussian(double[][] matrix) {
-    int n = matrix.length;
-    int m = matrix[0].length;
-    double[][] echelon = new double[n][];
-    for(int i = 0; i < matrix.length; i++) {
-      echelon[i] = matrix[i].clone();
+    // Returns the reduced row-echelon form of a matrix.
+    private double[][] Gaussian(double[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        double[][] echelon = new double[n][];
+        for(int i = 0; i < matrix.length; i++) {
+            echelon[i] = matrix[i].clone();
+        }
+
+        while (!isEchelon(echelon)) {
+            for (int i = 0; i < Math.min(n, m); i++) {
+                double pivot = matrix[i][i];
+                if (pivot != 0) {
+                    if (pivot != 1) {
+                        for (int j = 0; j < m; j++) { 
+                            echelon[i][j] /= pivot; 
+                        }
+                    }
+                    for (int rowNum = 0; rowNum < n; rowNum++) {
+                        for (int j = 0; j < m; j++) { 
+                            echelon[rowNum][j] -= echelon[rowNum][i] * echelon[i][j];
+                        }
+                    }
+                }
+            }
+        }
+        return echelon;
     }
 
-    while (!isEchelon(echelon)) {
-      for (int i = 0; i < Math.min(n, m); i++) {
-        double pivot = matrix[i][i];
-        if (pivot != 0) {
-          if (pivot != 1) {
-            for (int j = 0; j < m; j++) { 
-                echelon[i][j] /= pivot; 
+    // Tests whether a matrix is in reduced-row-echelon form
+    private boolean isEchelon(double[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        double[][] matrixTranspose = transpose(matrix);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                double val = matrix[i][j];
+                if (Math.abs(val) > 0) {
+                    int non_zero_count = 0;
+                    for (int k = 0; k < n; k++) {
+                        if (matrixTranspose[j][k] != 0) {
+                            non_zero_count += 1;
+                        }
+                    }
+            
+                    if (non_zero_count != 1){ 
+                        return false; 
+                    }
+                }
             }
-          }
-          for (int rowNum = 0; rowNum < n; rowNum++) {
-            for (int j = 0; j < m; j++) { 
-                echelon[rowNum][j] -= echelon[rowNum][i] * echelon[i][j];
-            }
-          }
+        
         }
-      }
+        return true;
     }
-    return echelon;
-  }
-
-  // Tests whether a matrix is in reduced-row-echelon form
-  private boolean isEchelon(double[][] matrix) {
-    int n = matrix.length;
-    int m = matrix[0].length;
-    double[][] matrixTranspose = transpose(matrix);
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-        double val = matrix[i][j];
-        if (Math.abs(val) > 0) {
-          int non_zero_count = 0;
-          for (int k = 0; k < n; k++) {
-            if (matrixTranspose[j][k] != 0) { non_zero_count += 1; }
-          }
-          if (non_zero_count != 1){ return false; }
-        }
-      }
-    }
-    return true;
-  }
 
     // Returns the transpose of a matrix.
     private double[][] transpose(double[][] matrix) {
@@ -123,9 +129,9 @@ private double[][] Gaussian(double[][] matrix) {
         int m = matrix[0].length;
         double[][] matrixTranspose = new double[m][n];
         for (int i = 0; i < n; i++) {
-          for (int j = 0; j < m; j++) {
-            matrixTranspose[m][n] = matrix[n][m];
-          }
+            for (int j = 0; j < m; j++) {
+                matrixTranspose[m][n] = matrix[n][m];
+            }
         }
         return matrixTranspose;
       }
