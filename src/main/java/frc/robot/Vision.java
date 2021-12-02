@@ -11,11 +11,11 @@ public class Vision {
     private NetworkTableEntry tx;
     private NetworkTableEntry ty;
     private NetworkTableEntry ta;
-    private final double TURN_SPEED = .1;
-    private final double FORWARD_SPEED = .2;
-    private final double MAX_SPEED = .2;
+    private final double TURN_SPEED = .02;
+    private final double FORWARD_SPEED = .3;
+    private final double MAX_SPEED = .3;
     private final double MIN_SPEED = .05;
-    private final double TARGET_HIGHT = .447;
+    private final double TARGET_HIGHT = .62;
     //private final double WANTED_AREA = 1;
     private final double CAMERA_HIGHT = .1;
     private final double CAMERA_ANGLE = 0;
@@ -29,19 +29,24 @@ public class Vision {
     }
 
     public void printCoords() {
-        System.out.println("tx: " + getTx() + "\tty: " + getTy() + "\tDistance " + distanceToTarget());
+        System.out.println("tx: " + round(getTx()) + "\tty: " + round(getTy()) + "\tDistance " + round(distanceToTarget())+ "ta: " + round(getTa()));
     }
 
     public double[] driveToTarget() {
         double driveInstructions[] = { 0.0, 0.0, 0.0 };
         if (getHasTarget()) {
-            driveInstructions[1] = distanceToTarget() * FORWARD_SPEED;
-            driveInstructions[2] = getTx() * TURN_SPEED;
+            if(getTa()< 9.8){
+                driveInstructions[1] = -1/getTa();
+                driveInstructions[2] = getTx() * TURN_SPEED;
+            } else if(getTa() > 11){
+                    driveInstructions[1] = 1/getTa();
+            //     driveInstructions[2] = -getTx() * TURN_SPEED;
+            }
             for (int i = 0; i < driveInstructions.length; i++) {
                 if (Math.abs(driveInstructions[i]) < MIN_SPEED) {
                     driveInstructions[i] = 0;
                 } else if (Math.abs(driveInstructions[i]) > MAX_SPEED) {
-                    driveInstructions[i] = MAX_SPEED * isNegative(driveInstructions[i]);
+                    driveInstructions[i] = MAX_SPEED * Math.signum(driveInstructions[i]);
                 }
             }
         }
@@ -74,12 +79,8 @@ public class Vision {
         return hasTarget.getDouble(0) == 1;
     }
 
-    private double isNegative(double num){
-        if(num < 0){
-            return -1;
-        } else {
-            return 1;
-        }
+    private double round(double x){
+        return Math.round(x*1000)/1000.;
     }
 
 }
