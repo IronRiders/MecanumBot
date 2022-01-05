@@ -3,8 +3,10 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class MecanumDrive {
-    private static final double kSpeedMultiplier = 0.3;
+    //private static final double kSpeedMultiplier = 0.3;
 
     private static final int kFrontLeftChannel = 1;
     private static final int kRearLeftChannel = 4;
@@ -15,6 +17,7 @@ public class MecanumDrive {
     private CANSparkMax[] motors;
 
     public MecanumDrive() {
+        SmartDashboard.putNumber("kSpeed", .1);
         this.motors = new CANSparkMax[4];
         this.motors[0] = new CANSparkMax(MecanumDrive.kFrontLeftChannel, MotorType.kBrushless);
         this.motors[1] = new CANSparkMax(MecanumDrive.kFrontRightChannel, MotorType.kBrushless);
@@ -27,6 +30,8 @@ public class MecanumDrive {
         this.motors[3].setInverted(false);
         inverted = true;
     }
+
+    
 
     public void invertDrive(){
         inverted = !inverted;
@@ -51,7 +56,7 @@ public class MecanumDrive {
         }
         
         for (int i = 0; i < 4; ++i) {
-            this.motors[i].set(speeds[i] * MecanumDrive.kSpeedMultiplier);
+            this.motors[i].set(speeds[i] * SmartDashboard.getNumber("kSpeed", .1));
         }
         
     }
